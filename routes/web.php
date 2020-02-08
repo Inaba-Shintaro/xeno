@@ -18,3 +18,15 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+
+
+////////////////////////////////////////
+//group/////////////////////////////
+
+Route::get('/groups/search', 'GroupController@search')->name('groups.search');
+
+Route::resource('groups', 'GroupController');
+
+
+////////////////////////////////////////
