@@ -9,7 +9,7 @@
         @foreach($auth->groups as $auth_group)
             <h1 class="display-4">{{$auth_group->name}}</h1>
             <hr class="my-4">
-            <a class="btn btn-primary btn-lg" href="{{route('xeno.roomEnter')}}" role="button">入室する</a>
+            <a class="btn btn-primary btn-lg" href="{{route('xenos.roomEnter',$auth_group->id)}}" role="button">入室する</a>
         @endforeach
     @endisset
     </div>

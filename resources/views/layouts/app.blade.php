@@ -10,7 +10,7 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}" defer></script>
+    <script src="{{ asset('js/app.js') }}" defer></script>    
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -90,5 +90,13 @@
             @yield('content')
         </main>
     </div>
+<script>
+    var chat_room_id = {{ $group->id ?? null }};
+    var user_id = {{ Auth::user()->id ?? null }};
+    var current_user_name = "{{ Auth::user()->name ?? null }}";
+    var chat_room_user_name = "{{ $chat_room_user_name ?? null }}";
+    var ready = "{{$ready ?? null}}";
+    var readyCount = {{$readyCount ?? null}};
+</script>
 </body>
 </html>

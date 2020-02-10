@@ -10,6 +10,7 @@ use App\GroupUser;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
+
 class GroupController extends Controller
 {
     /**
@@ -158,4 +159,6 @@ class GroupController extends Controller
     {
         //
     }
+
+
 }
