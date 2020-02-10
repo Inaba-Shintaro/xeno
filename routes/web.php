@@ -18,3 +18,19 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+
+
+////////////////////////////////////////
+//group/////////////////////////////
+Route::get('/groups/search', 'GroupController@search')->name('groups.search');
+Route::resource('groups', 'GroupController');
+////////////////////////////////////////
+
+////////////////////////////////////////
+//xeno/////////////////////////////
+Route::post('/xenos/chat', 'XenoController@chat')->name('xenos.chat'); // この行を追加します。
+Route::get('/xenos/ready/{group_id}', 'XenoController@ready')->name('xenos.ready'); // この行を追加します。
+Route::get('/xenos/roomEnter/{group_id}', 'XenoController@roomEnter')->name('xenos.roomEnter');
+Route::resource('xenos', 'XenoController');
+////////////////////////////////////////
