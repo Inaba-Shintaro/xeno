@@ -39,12 +39,18 @@
         "classmap": [
             "database/seeds",
             "database/factories"
+        ],
+        "files": [
+            "app/Helpers/SearchFromUsersTable.php"
         ]
     },
     "autoload-dev": {
         "psr-4": {
             "Tests\\": "tests/"
-        }
+        },
+        "files": [
+            "app/Helpers/SearchFromUsersTable.php"
+        ]
     },
     "minimum-stability": "dev",
     "prefer-stable": true,

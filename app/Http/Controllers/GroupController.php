@@ -9,7 +9,9 @@ use App\Group;
 use App\GroupUser;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-
+use App\Http\Requests\GroupRequest;
+use Illuminate\Routing\Redirector;
+use App\Helpers\SearchFromUsersTable;
 
 class GroupController extends Controller
 {
@@ -22,11 +24,12 @@ class GroupController extends Controller
     {
         $auth = Auth::user();
         $auth->load('groups');
-        if($auth->groups->first() == null){
-            $errorMessage = '参加しているグループはありません。';
-            return view('groups.index',['errorMessage'=>$errorMessage]);
+        $existGroup = $auth->groups->first();
+        if($existGroup){
+            return view('groups.index',compact('auth'));
         }
-        return view('groups.index',compact('auth'));
+        $errorMessage = '参加しているグループはありません。';
+        return view('groups.index',['errorMessage'=>$errorMessage]);
     }
 
     /**
@@ -39,35 +42,18 @@ class GroupController extends Controller
         return view('groups.create');
     }
 
-    public function search(Request $request)
-    {        
+    public function search(GroupRequest $request)
+    {
         if($request->user_id_0 == Auth::id()){
-
-            $errorMessage = '自分はメンバーに追加できません。';
+            $errorMessage = '自分はメンバーに追加できません。'; 
             return view('groups.create',['errorMessage'=>$errorMessage]);
-
         } else {
-
-            try{  
-                $memberUsers = [];
-
-                $memberUsers[] = User::findOrFail($request->user_id_0);
-
-                if(isset($request->user_id_1)){
-                    $memberUsers[] = User::findOrFail($request->user_id_1);
-                }
-                if(isset($request->user_id_2)){
-                    $memberUsers[] = User::findOrFail($request->user_id_2);
-                }
-                if(isset($request->user_id_3)){
-                    $memberUsers[] = User::findOrFail($request->user_id_3);
-                }
-
+            try{
+                $memberUsers = SearchFromUsersTable($request);
             } catch (ModelNotFoundException $e) {
                 $errorMessage = 'そのIDのユーザーは見つかりません。';
                 return view('groups.create',['errorMessage'=>$errorMessage]);
             }
-
             return view('groups.create',['memberUsers'=>$memberUsers]);
         }
     }
@@ -78,13 +64,11 @@ class GroupController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(GroupRequest $request)
     {
-        // dd($request);
         $group = new Group;
         $group->name = $request->name;
         $group->save();
-        // dd($group);
 
         $group_users =new GroupUser;
         $group_users->group_id = $group->id;
@@ -144,7 +128,7 @@ class GroupController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(GroupRequest $request, $id)
     {
         //
     }
